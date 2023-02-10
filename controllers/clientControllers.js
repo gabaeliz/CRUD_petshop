@@ -1,8 +1,8 @@
-import { clientServices } from "../screens/service/client-service.js";
+import { clientServices } from "../service/client-service.js";
 
-const createNewLine = (nombre, email) => {
-    const line = document.createElement('tr');
-    const content = `
+const createNewLine = (nombre, email, id) => {
+  const line = document.createElement('tr');
+  const content = `
           <td class="td" data-td>
           ${nombre}
           </td>
@@ -13,22 +13,29 @@ const createNewLine = (nombre, email) => {
                 <a href="../screens/editar_cliente.html" class="simple-button simple-button--edit">Editar</a>
               </li>
               <li>
-                <button class="simple-button simple-button--delete" type="button">
+                <button class="simple-button simple-button--delete" type="button" id="${id}">
                   Eliminar
                 </button>
               </li>
             </ul>
           </td>
           `;
-    line.innerHTML = content;
-    return line;
+  line.innerHTML = content;
+  const btn = line.querySelector('button');
+  btn.addEventListener('click', () => {
+    const id = btn.id;
+    clientServices.deleteClient(id).then((response) => {
+      console.log(response);
+    }).catch((err) => alert("Ocurrio un error"));
+});
+return line;
 };
 
 const table = document.querySelector('[data-table]');
 
 clientServices.listClients().then((data) => {
-    data.forEach(perfil => {
-        const newLine = createNewLine(perfil.nombre, perfil.email);
-        table.appendChild(newLine)
-    });
+  data.forEach(({ nombre, email, id }) => {
+    const newLine = createNewLine(nombre, email, id);
+    table.appendChild(newLine);
+  });
 }).catch((error) => alert('Ocurrio un error'));
