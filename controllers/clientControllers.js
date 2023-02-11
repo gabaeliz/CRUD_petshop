@@ -10,7 +10,7 @@ const createNewLine = (nombre, email, id) => {
           <td>
             <ul class="table__button-control">
               <li>
-                <a href="../screens/editar_cliente.html" class="simple-button simple-button--edit">Editar</a>
+                <a href="../screens/editar_cliente.html?/${id}" class="simple-button simple-button--edit">Editar</a>
               </li>
               <li>
                 <button class="simple-button simple-button--delete" type="button" id="${id}">
@@ -27,8 +27,8 @@ const createNewLine = (nombre, email, id) => {
     clientServices.deleteClient(id).then((response) => {
       console.log(response);
     }).catch((err) => alert("Ocurrio un error"));
-});
-return line;
+  });
+  return line;
 };
 
 const table = document.querySelector('[data-table]');
